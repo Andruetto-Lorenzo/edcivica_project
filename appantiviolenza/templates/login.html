@@ -8,7 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/login.css">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
     
     <title>1522 login page</title>
 </head>
@@ -30,11 +32,59 @@
     </header>
 
     {% if registrazione %}
-    <div class="container-form-register">
-        <form action="" method="post">
+    <div class="row g-3">
+        <form class="row g-3">
             {% csrf_token %}
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input type="email" class="form-control" id="inputEmail4">
+            </div>
+            <div class="col-md-6">
+                <label for="inputPassword4" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword4">
+            </div>
+            <div class="col-12">
+                <label for="inputAddress" class="form-label">Address</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+            <div class="col-12">
+                <label for="inputAddress2" class="form-label">Address 2</label>
+                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="col-md-6">
+                <label for="inputCity" class="form-label">City</label>
+                <input type="text" class="form-control" id="inputCity">
+            </div>
+            <div class="col-md-4">
+                <label for="inputState" class="form-label">State</label>
+                <select id="inputState" class="form-select">
+                <option selected>Choose...</option>
+                <option>...</option>
+            </select>
+            </div>
+            <div class="col-md-2">
+                <label for="inputZip" class="form-label">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                    <label class="form-check-label" for="gridCheck">
+                        Check me out
+                    </label>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- <div class="container-form-register">
+        <form action="" method="post"> -->
+            <!--ricordati di mettere il csrf_token-->
             <!-- <label class="control-label">Cognome</label> -->
-            <input type="text" name="cognome" id="cognome" placeholder="Cognome"/>
+            <!-- <input type="text" name="cognome" id="cognome" placeholder="Cognome"/>
             <input type="text" name="nome" id="nome" placeholder="Nome"/>
             <select name="fascia_eta" id="eta">
                 <option value="-18">-18</option>
@@ -48,11 +98,11 @@
             <input type="text" name="email" id="email" placeholder="Email"/>
             <input type="text" name="telefono" id="telefono" placeholder="Telefono"/>
             <input type="text" name="password" id="password" placeholder="Password"/>
-            <button>Register</button>
+            <button>Register</button> -->
 
-            <button type="button" class="btn btn-primary btn-lg btn-block">Hai già un account? Accedi</button>
-        </form>
-    </div>
+            <!-- <button type="button" class="btn btn-primary btn-lg btn-block">Hai già un account? Accedi</button>
+        </form>a
+    </div> -->
    
     {% else %}
     <div class="container-form-login">
