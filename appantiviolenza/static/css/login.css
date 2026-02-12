@@ -7,10 +7,12 @@
 header {
     display: flex;
     flex-flow: row wrap;
+    width: 100%;
+    border: 1px solid black;
 }
 
-.navbar {
-    padding-left: 15px;
+nav {
+    width: 100%;
 }
 
 form {
@@ -26,4 +28,8 @@ form {
 
 form > * {
     width: 200px;
+}
+
+button {
+    border: none;
 }
