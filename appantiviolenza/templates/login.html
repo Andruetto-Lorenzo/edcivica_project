@@ -1,40 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-p width, initial-scale=1.0">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/login.css">
+    
     <title>1522 login page</title>
 </head>
 <body>
     <header>
-        <p>1522</p>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="home.html">
+                  <img src="" alt="Logo">
+                </a>
+              </div>
+            </div>
+        </nav>
     </header>
 
     {% if registrazione %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="cognome" id="cognome" placeholder="Cognome"/>
-        <input type="text" name="nome" id="nome" placeholder="Nome"/>
-        <select name="fascia_eta" id="eta">
-            <option value="-18">-18</option>
-            <option value="18-29">18-29</option>
-            <option value="30-49">30-49</option>
-            <option value="50-70">50-70</option>
-            <option value="70+">70+</option>
-        </select>
+    <div class="container-form-register">
+        <form action="" method="post">
+            {% csrf_token %}
+            <!-- <label class="control-label">Cognome</label> -->
+            <input type="text" name="cognome" id="cognome" placeholder="Cognome"/>
+            <input type="text" name="nome" id="nome" placeholder="Nome"/>
+            <select name="fascia_eta" id="eta">
+                <option value="-18">-18</option>
+                <option value="18-29">18-29</option>
+                <option value="30-49">30-49</option>
+                <option value="50-70">50-70</option>
+                <option value="70+">70+</option>
+            </select>
 
-        <input type="text" name="regione" id="regione" placeholder="Regione"/>
-        <input type="text" name="email" id="email" placeholder="Email"/>
-        <input type="text" name="telefono" id="telefono" placeholder="Telefono"/>
-        <input type="text" name="password" id="password" placeholder="Password"/>
-    </form>
+            <input type="text" name="regione" id="regione" placeholder="Regione"/>
+            <input type="text" name="email" id="email" placeholder="Email"/>
+            <input type="text" name="telefono" id="telefono" placeholder="Telefono"/>
+            <input type="text" name="password" id="password" placeholder="Password"/>
+            <button>Register</button>
+
+            <button type="button" class="btn btn-primary btn-lg btn-block">Hai già un account? Accedi</button>
+        </form>
+    </div>
+   
     {% else %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="nome_utente" id="nome_utente" placeholder="Nome Utente"/>
-        <input type="text" name="password" id="pass" placeholder="Password"/>
-    </form>
+    <div class="container-form-login">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="nome_utente" id="nome_utente" placeholder="Nome Utente"/>
+            <input type="text" name="password" id="pass" placeholder="Password"/>
+            <button type="button">Registrati</button>
+        </form>
+    </div>
     {% endif %}
 </body>
 </html>
