@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from ..forms import UtenteForm
+from ..models import Utente
 
 def register(request):
     form = UtenteForm(request.POST or None)
@@ -9,6 +10,10 @@ def register(request):
                "Toscana", "Emilia Romagna", "Marche", "Umbria",
                "Abruzzo", "Lazio", "Campania", "Molise", "Puglia", "Basilicata",
                "Calabria", "Sicilia", "Sardegna"]
+    
+    fascia_eta = []
+    for eta in Utente.FASCE_ETA_CHOICES:
+        fascia_eta.append(eta[1])
 
     if request.method == 'POST':
         print('POST HTTP METHOD SELECTED')
@@ -20,6 +25,7 @@ def register(request):
     return render(request, 'login.html', {
         'registrazione': True,
         'regioni_italia': regioni,
+        'fascie_eta': fascia_eta,
         })
 
 def login(request):
