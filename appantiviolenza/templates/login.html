@@ -11,7 +11,7 @@
     
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    
+
     <title>1522 login page</title>
 </head>
 <body>
@@ -24,7 +24,7 @@
                 </a>
 
                 <button class="navbar-en">
-                    <img src="" alt="english_language">
+                    <img src="{% static 'img/en_lang.png' %}" alt="english_language">
                 </button>
               </div>
             </div>
@@ -36,8 +36,8 @@
         <form class="row g-3">
             {% csrf_token %}
             <div class="col-md-6">
-                <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail4">
+                <label for="inputSurname" class="form-label">Cognome</label>
+                <input type="text" class="form-control" id="inputSurname">
             </div>
             <div class="col-md-6">
                 <label for="inputPassword4" class="form-label">Password</label>
@@ -56,24 +56,24 @@
                 <input type="text" class="form-control" id="inputCity">
             </div>
             <div class="col-md-4">
-                <label for="inputState" class="form-label">State</label>
+                <label for="inputState" class="form-label">Regione</label>
                 <select id="inputState" class="form-select">
-                <option selected>Choose...</option>
-                <option>...</option>
+                
+                <option value=""></option>
             </select>
             </div>
             <div class="col-md-2">
                 <label for="inputZip" class="form-label">Zip</label>
                 <input type="text" class="form-control" id="inputZip">
             </div>
-            <div class="col-12">
+            <!-- <div class="col-12">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="gridCheck">
                     <label class="form-check-label" for="gridCheck">
                         Check me out
                     </label>
                 </div>
-            </div>
+            </div> -->
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Sign in</button>
             </div>
@@ -81,10 +81,10 @@
     </div>
 
     <!-- <div class="container-form-register">
-        <form action="" method="post"> -->
-            <!--ricordati di mettere il csrf_token-->
-            <!-- <label class="control-label">Cognome</label> -->
-            <!-- <input type="text" name="cognome" id="cognome" placeholder="Cognome"/>
+        <form action="" method="post"> 
+            ricordati di mettere il csrf_token-->
+            <!-- <label class="control-label">Cognome</label>
+            <input type="text" name="cognome" id="cognome" placeholder="Cognome"/>
             <input type="text" name="nome" id="nome" placeholder="Nome"/>
             <select name="fascia_eta" id="eta">
                 <option value="-18">-18</option>
@@ -93,15 +93,18 @@
                 <option value="50-70">50-70</option>
                 <option value="70+">70+</option>
             </select>
+            <input type="text" name="regione" id="regione" placeholder="Regione"/> -->
 
-            <input type="text" name="regione" id="regione" placeholder="Regione"/>
+            <!--<label for="">Regione</label>
+            
+
             <input type="text" name="email" id="email" placeholder="Email"/>
             <input type="text" name="telefono" id="telefono" placeholder="Telefono"/>
             <input type="text" name="password" id="password" placeholder="Password"/>
-            <button>Register</button> -->
+            <button>Register</button>
 
-            <!-- <button type="button" class="btn btn-primary btn-lg btn-block">Hai già un account? Accedi</button>
-        </form>a
+            <button type="button" class="btn btn-primary btn-lg btn-block">Hai già un account? Accedi</button>
+        </form>
     </div> -->
    
     {% else %}
