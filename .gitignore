@@ -1,3 +1,4 @@
 *migrations/*
 appantiviolenza/__pycache__
 appantiviolenza/views/__pycache__
+*.pyc
