@@ -326,6 +326,13 @@ body > .row {
 
 .container-form-login .login-footer a:hover { text-decoration: underline; }
 
+.form-login {
+  background: none;
+  border: none;
+  display: flex;
+  
+}
+
 /* ── Animations ── */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(24px); }

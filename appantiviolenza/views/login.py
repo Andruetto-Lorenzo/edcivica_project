@@ -56,6 +56,10 @@ def register(request):
         })
 
 def login(request):
+    if request.method == 'POST':
+        registrazione = request.POST.get("registrazione")
+        print(registrazione)
+
     return render(request, 'login.hmtl', {
         'registrazione': False,
     })
