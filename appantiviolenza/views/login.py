@@ -47,16 +47,7 @@ def register(request):
         )
 
         print(utente.username, utente.email, utente.password)
-
         return redirect('home')
-    # if request.method == 'GET':
-    #     print("GET HTTP METHOD SELECTED")
-
-        # utente = Utente.objects.create_user(
-        #     username="",
-        #     password="",
-        # )
-
 
     return render(request, 'login.html', {
         'registrazione': True,
