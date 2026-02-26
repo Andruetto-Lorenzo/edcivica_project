@@ -3,7 +3,12 @@ from django.contrib.auth.models import User
 from ..forms import UtenteForm
 from ..models import Utente
 
-def register(request):
+def register_view(request):
+    mode = request.GET.get("mode", "register")
+    print(mode)
+    registrazione = (mode == "register")
+    print(registrazione)
+
     form = UtenteForm(request.POST or None)
     REGIONI = ["Valle d'Aosta", "Piemonte", 
                "Liguria", "Lombardia", "Veneto", 
@@ -30,36 +35,41 @@ def register(request):
         telefono = request.POST.get("telefono")
         eta_scelta = request.POST.get("fascia_eta")
         regione = request.POST.get("regione_provenienza")
+        
+        if registrazione:
+            print(mode)
+            utente = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+            )
 
-        utente = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-        )
+            Utente.objects.create(
+                nome_utente=username,
+                email=email,
+                password=utente.password,
+                telefono=telefono,
+                fascia_eta=eta_scelta,
+                regione_provenienza=regione,
+            ).save()
 
-        Utente.objects.create(
-            nome_utente=username,
-            email=email,
-            password=utente.password,
-            telefono=telefono,
-            fascia_eta=eta_scelta,
-            regione_provenienza=regione,
-        )
-
-        print(utente.username, utente.email, utente.password)
-        return redirect('home')
+            print(utente.username, utente.email, utente.password)
+            return redirect('home')
+        elif mode == 'login':
+            print(mode)
+            print("modalità login scelta")
 
     return render(request, 'login.html', {
-        'registrazione': True,
+        'registrazione': registrazione,
         'regioni_italia': REGIONI,
         'fascie_eta': fascia_eta,
         })
 
-def login(request):
-    if request.method == 'POST':
-        registrazione = request.POST.get("registrazione")
-        print(registrazione)
+# def login(request):
+#     if request.method == 'POST':
+#         registrazione = request.POST.get("registrazione")
+#         print(registrazione)
 
-    return render(request, 'login.hmtl', {
-        'registrazione': False,
-    })
+#     return render(request, 'login.hmtl', {
+#         'registrazione': False,
+#     })
