@@ -15,15 +15,18 @@
     <header>
         <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
             <div class="container-fluid">
-                <div class="navbar-header">
+                <div class="navbar-left">
                     <a class="navbar-brand" href="home.html">
                         <img src="" alt="Logo">
                     </a>
+                    <button class="navbar-it">
+                        <img src="" alt="italian_language">
+                    </button>
                     <button class="navbar-en">
                         <img src="" alt="english_language">
                     </button>
                 </div>
-                <div class="navbar-left">
+                <div class="navbar-left nvb-lft">
                     <a href="{% url 'contacts' %}">Contatti</a>
                     <a href="#">Chi siamo?</a>
                     <a href="{% url 'login' %}">Registrati.</a>
@@ -31,5 +34,9 @@
             </div>
         </nav>
     </header>
+
+    <div class="body-page">
+        <h1>1522</h1>
+    </div>
 </body>
-</html> 
+</html>

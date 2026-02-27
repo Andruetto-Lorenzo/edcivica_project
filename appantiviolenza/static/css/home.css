@@ -9,7 +9,11 @@
     --accent:       #c0392b;       /* rosso istituzionale */
     --accent-soft:  #f5ede9;
     --accent-hover: #a93226;
+    --cinnabar:     #ff312e;
     --warm-mid:     #d4a89a;
+    --charcoal:     #515052;
+    --smoky-rose:   #785964;
+    --ink-black:    #101419;
     --shadow-sm:    0 2px 8px rgba(26,20,16,.07);
     --shadow-md:    0 8px 32px rgba(26,20,16,.10);
     --shadow-lg:    0 20px 60px rgba(26,20,16,.14);
@@ -27,16 +31,17 @@ html {
 
 body {
     font-family: var(--font-family-carino);
-    font-weight: 300;
+    font-weight: 400;
     font-style: normal;
     font-optical-sizing: auto;
 }
 
 nav {
     transition: var(--transition);
+    height: 20%;
 }
 
-.navbar-en {
+nav button {
   background: transparent;
   border: 1px solid rgba(255,255,255,.18);
   color: rgba(255,255,255,.7);
@@ -58,3 +63,22 @@ nav {
 
 .navbar-en::before { content: "EN"; }
 .navbar-en img { display: none; }
+
+.navbar-it::before {
+    content: 'IT';
+}
+
+.navbar-it img {
+    display: none;
+}
+
+.nvb-lft {
+    display: grid;
+    grid-template-columns: 20% 20% 20%;
+    column-gap: 5vh;
+}
+
+a {
+    text-decoration: none;
+    color: var(--accent-soft);
+}
