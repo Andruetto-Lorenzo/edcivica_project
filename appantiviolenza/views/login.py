@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from ..forms import UtenteForm
 from ..models import Utente
 
@@ -37,7 +38,7 @@ def register_view(request):
         regione = request.POST.get("regione_provenienza")
         
         if registrazione:
-            print(mode)
+            print("modalità:", mode)
             utente = User.objects.create_user(
                 username=username,
                 email=email,
@@ -54,22 +55,21 @@ def register_view(request):
             ).save()
 
             print(utente.username, utente.email, utente.password)
-            return redirect('home')
         elif mode == 'login':
-            print(mode)
-            print("modalità login scelta")
+            print("modalità:", mode)
+
+            nome_utente = request.POST.get("nome_utente")
+            passw = request.POST.get("password")
+            user = authenticate(request, username=nome_utente, password=passw)
+            
+            if user is not None:
+                login(request, user)
+                return redirect('operator_space')
+            else:
+                print('login non valido.')
 
     return render(request, 'login.html', {
         'registrazione': registrazione,
         'regioni_italia': REGIONI,
         'fascie_eta': fascia_eta,
         })
-
-# def login(request):
-#     if request.method == 'POST':
-#         registrazione = request.POST.get("registrazione")
-#         print(registrazione)
-
-#     return render(request, 'login.hmtl', {
-#         'registrazione': False,
-#     })

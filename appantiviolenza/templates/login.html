@@ -80,52 +80,26 @@
             <div class="col-md-6">
                 <button type="submit" class="btn btn-primary">Sign in</button>
             </div>
-            <div class="row g-3 col-md-6">
-                <form method="get">
-                    <label for="loginBtn" class="form-label text-center">Hai già un account?</label>
-                    <button type="submit" class="btn btn-primary" name="mode" value="login">Accedi</button>
-                </form>
-            </div>
         </form>
+        <div class="row g-3 col-md-6">
+            <form method="get">
+                <label for="loginBtn" class="form-label text-center">Hai già un account?</label>
+                <button type="submit" class="btn btn-primary" name="mode" value="login">Accedi</button>
+            </form>
+        </div>
     </div>
-
-    <!-- <div class="container-form-register">
-        <form action="" method="post"> 
-            ricordati di mettere il csrf_token-->
-            <!-- <label class="control-label">Cognome</label>
-            <input type="text" name="cognome" id="cognome" placeholder="Cognome"/>
-            <input type="text" name="nome" id="nome" placeholder="Nome"/>
-            <select name="fascia_eta" id="eta">
-                <option value="-18">-18</option>
-                <option value="18-29">18-29</option>
-                <option value="30-49">30-49</option>
-                <option value="50-70">50-70</option>
-                <option value="70+">70+</option>
-            </select>
-            <input type="text" name="regione" id="regione" placeholder="Regione"/> -->
-
-            <!--<label for="">Regione</label>
-            
-
-            <input type="text" name="email" id="email" placeholder="Email"/>
-            <input type="text" name="telefono" id="telefono" placeholder="Telefono"/>
-            <input type="text" name="password" id="password" placeholder="Password"/>
-            <button>Register</button>
-
-            <button type="button" class="btn btn-primary btn-lg btn-block">Hai già un account? Accedi</button>
-        </form>
-    </div> -->
-   
-    {% elif mode == 'login' %}
+    
+    {% else %}
     <div class="container-form-login row g-3">
         <form action="" method="post">
             {% csrf_token %}
             <input type="text" name="nome_utente" id="nome_utente" placeholder="Nome Utente"/>
-            <input type="text" name="password" id="pass" placeholder="Password"/>
-            <form method="get">
-                <label for="registerBtn form-label text-center">Non hai un account?</label>
-                <button type="submit" class="btn btn-primary" name="mode" value="register">Registrati</button>
-            </form>
+            <input type="password" name="password" id="pass" placeholder="Password"/>
+            <button type="submit" class="btn btn-primary">Accedi</button>
+        </form>
+        <form method="get">
+            <label for="registerBtn form-label text-center">Non hai un account?</label>
+            <button type="submit" class="btn btn-primary" name="mode" value="register">Registrati</button>
         </form>
     </div>
     {% endif %}

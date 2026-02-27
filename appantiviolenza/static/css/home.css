@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=SN+Pro:ital@0;1&display=swap');
+
+:root {
+    --bg:           #faf7f4;
+    --surface:      #ffffff;
+    --border:       #e8e0d8;
+    --text-primary: #1a1410;
+    --text-muted:   #7a6e65;
+    --accent:       #c0392b;       /* rosso istituzionale */
+    --accent-soft:  #f5ede9;
+    --accent-hover: #a93226;
+    --warm-mid:     #d4a89a;
+    --shadow-sm:    0 2px 8px rgba(26,20,16,.07);
+    --shadow-md:    0 8px 32px rgba(26,20,16,.10);
+    --shadow-lg:    0 20px 60px rgba(26,20,16,.14);
+    --radius:       14px;
+    --radius-sm:    8px;
+    --font-display: 'Lora', Georgia, serif;
+    --font-body:    'DM Sans', sans-serif;
+    --font-family-carino: 'SN Pro', sans-serif;
+    --transition:   .22s cubic-bezier(.4,0,.2,1);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-carino);
+    font-weight: 300;
+    font-style: normal;
+    font-optical-sizing: auto;
+}
+
+nav {
+    transition: var(--transition);
+}
+
+.navbar-en {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.7);
+  border-radius: 20px;
+  padding: .3rem .85rem;
+  font-family: var(--font-family-carino);
+  font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.navbar-en:hover {
+  background: rgba(255,255,255,.1);
+  color: #fff;
+}
+
+.navbar-en::before { content: "EN"; }
+.navbar-en img { display: none; }

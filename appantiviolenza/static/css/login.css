@@ -61,6 +61,7 @@ button {
   --radius-sm:    8px;
   --font-display: 'Lora', Georgia, serif;
   --font-body:    'DM Sans', sans-serif;
+  --font-family-carino: 'SN Pro', sans-serif;
   --transition:   .22s cubic-bezier(.4,0,.2,1);
 }
 
@@ -70,7 +71,10 @@ button {
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-family-carino);
+  font-weight: 300;
+  font-style: normal;
+  font-optical-sizing: auto;
   background-color: var(--bg);
   color: var(--text-primary);
   min-height: 100vh;

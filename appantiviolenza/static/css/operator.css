@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=SN+Pro:ital@0;1&display=swap');
+
+:root {
+    --font-display: 'SN Pro', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-style: normal;
+    font-optical-sizing: auto;
+}

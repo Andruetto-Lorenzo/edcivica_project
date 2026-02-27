@@ -15,19 +15,19 @@
     <header>
         <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
             <div class="container-fluid">
-              <div class="navbar-header">
-                <a class="navbar-brand" href="home.html">
-                  <img src="" alt="Logo">
-                </a>
-
-                <button class="navbar-en">
-                    <img src="" alt="english_language">
-                </button>
-              </div>
-            </div>
-            
-            <div class="navbar-login">
-                <a href="{% url 'login' %}">Registrati.</a>
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="home.html">
+                        <img src="" alt="Logo">
+                    </a>
+                    <button class="navbar-en">
+                        <img src="" alt="english_language">
+                    </button>
+                </div>
+                <div class="navbar-left">
+                    <a href="{% url 'contacts' %}">Contatti</a>
+                    <a href="#">Chi siamo?</a>
+                    <a href="{% url 'login' %}">Registrati.</a>
+                </div>
             </div>
         </nav>
     </header>
