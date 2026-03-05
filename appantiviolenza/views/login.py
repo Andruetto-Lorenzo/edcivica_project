@@ -33,7 +33,7 @@ def register_view(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        telefono = request.POST.get("telefono")
+        telefono = request.POST2.get("telefono")
         eta_scelta = request.POST.get("fascia_eta")
         regione = request.POST.get("regione_provenienza")
         
@@ -64,7 +64,7 @@ def register_view(request):
             
             if user is not None:
                 login(request, user)
-                return redirect('operator_space')
+                return redirect('admin')
             else:
                 print('login non valido.')
 
