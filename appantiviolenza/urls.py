@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
-from .views import home, login, operator, contacts, tickets
+from .views import home, login, operator, contacts
+from .views import tickets
 
 urlpatterns = [
     path('admin/', admin.site.urls),
