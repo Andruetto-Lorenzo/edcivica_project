@@ -12,7 +12,6 @@ class Utente(models.Model):
     id = models.BigAutoField(primary_key=True)
     nome_utente = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField()
-    password = models.CharField(max_length=1000, null=False, blank=False)
     telefono = models.BigIntegerField(null=False, blank=False)
     regione_provenienza = models.CharField(max_length=20, null=False, blank=False)
     fascia_eta = models.CharField(max_length=10, choices=FASCE_ETA_CHOICES)
