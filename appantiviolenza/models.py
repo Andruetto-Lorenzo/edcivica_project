@@ -35,15 +35,15 @@ class Ticket(models.Model):
     ]
 
     nome_utente = models.CharField(max_length=100, null=True, blank=True)
-    email = models.EmailField()
-    telefono = models.BigIntegerField(null=False, blank=False)
-    regione_provenienza = models.CharField(max_length=20, null=False, blank=False)
-    fascia_eta = models.CharField(max_length=10, choices=FASCE_ETA_CHOICES)
+    email = models.EmailField(null=True, blank=True)
+    telefono = models.BigIntegerField(null=True, blank=True)
+    regione_provenienza = models.CharField(max_length=30, null=True, blank=True)
+    fascia_eta = models.CharField(max_length=10, choices=FASCE_ETA_CHOICES, null=True, blank=True)
     data = models.DateField(null=False, blank=False, auto_now_add=True)
     ora = models.TimeField(null=False, blank=False, auto_now_add=True)
     tipo_violenza = models.CharField(max_length=15, choices=VIOLENZA_CHOICES, null=False, blank=False)
     descrizione = models.CharField(max_length=500, null=False, blank=False)
-    livello_urgenza = models.IntegerField(null=False, blank=False, choices=LIVELLO_URGENZA_CHOICES)
+    livello_urgenza = models.CharField(max_length=40, null=False, blank=False, choices=LIVELLO_URGENZA_CHOICES)
     stato_richiesta = models.CharField(max_length=20, null=False, blank=False)
 
 class Segnalazioni(models.Model):

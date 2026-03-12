@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from ..models import Ticket
 
 def operator(request):
+    tickets = Ticket.objects.all()
+
     return render(request, 'operator.html', {
-        'name': 'marco',
+        'tickets': tickets,
     })
