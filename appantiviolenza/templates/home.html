@@ -1,56 +1,82 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
- 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-
-    <title>1522 | Help line per stalking e abusi.</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>1522 - Help Line Violenza e Stalking</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
-    <header>
-        <nav class="navbar border-bottom border-body" data-bs-theme="dark">
-            <div class="container-fluid">
-                <div class="navbar-left">   
-                    <a class="navbar-brand" href="home.html">
-                        <img src="" alt="Logo">
-                    </a>
-                    <button class="navbar-it">
-                        <img src="" alt="italian_language">
-                    </button>
-                    <button class="navbar-en">
-                        <img src="" alt="english_language">
-                    </button>
-                </div>
-                <div class="navbar-left nvb-lft">
-                    <a href="{% url 'contacts' %}">Contatti</a>
-                    <a href="{% url 'tickets' %}">Invia un ticket</a>
-                    <a href="#">Chi siamo?</a>
-                    <a href="{% url 'login' %}">Log in</a>
-                </div>
-            </div>
-        </nav>
-    </header>
 
-    <div class="body-page">
-        <h1>1522</h1>
-
-        <p>Il 1522 è un servizio pubblico promosso dalla Presidenza del Consiglio dei Ministri Dipartimento per le Pari Opportunità. 
-        Il numero, gratuito è attivo 24 h su 24, accoglie con operatrici specializzate le richieste di aiuto e sostegno delle donne vittime di violenza e stalking.
-        Per avere aiuto o anche solo un consiglio chiama il 1522 (il numero è gratuito anche dai cellulari) oppure</p>
-
-        <div class="services">
-            <div class="col-md-6">
-                <h4>Telefono</h4>
-                <p>
-                    chiama il 1522 adesso a questo numero:
-                    3455623450
-                </p>
-            </div>
-        </div>
+<nav>
+    <div class="nav-brand">
+        <span class="nav-number">1522</span>
+        <span class="nav-tagline">Help Line Violenza e Stalking<br>Gratuito · 24h · 7 giorni su 7</span>
     </div>
+    <div class="nav-links">
+        <a href="#info">Info</a>
+        <a href="{% url 'tickets' %}">Invia richiesta</a>
+        <a href="{% url 'login' %}" class="btn-login">Accesso Operatori</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-number">1522</div>
+    <div class="hero-subtitle">Help Line Violenza e Stalking</div>
+    <span class="hero-badge">📞 Gratuito &nbsp;·&nbsp; Attivo 24 ore su 24 &nbsp;·&nbsp; Anche dai cellulari</span>
+</section>
+
+<div class="description-wrap" id="info">
+    <div class="description-card">
+        <h2>Sito del 1522 Help Line Violenza e Stalking</h2>
+        <p>
+            Il <strong>1522</strong> è un servizio pubblico promosso dalla Presidenza del Consiglio dei Ministri –
+            Dipartimento per le Pari Opportunità. Il numero, gratuito è attivo 24 h su 24, accoglie con
+            operatrici specializzate le richieste di aiuto e sostegno delle donne vittime di violenza e stalking.
+        </p>
+        <span class="highlight">
+            Per avere aiuto o anche solo un consiglio chiama il 1522<br>
+            <small style="font-weight:300;font-size:.92rem;">(il numero è gratuito anche dai cellulari)</small>
+        </span>
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <div class="feature-icon">🕐</div>
+        <h3>Disponibile sempre</h3>
+        <p>Il servizio è operativo 24 ore su 24, 7 giorni su 7, 365 giorni all'anno. Non sei mai sola.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Anonimato garantito</h3>
+        <p>Puoi contattarci in modo completamente anonimo. La tua privacy è la nostra priorità assoluta.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Operatrici specializzate</h3>
+        <p>Il nostro team è composto da professioniste formate per ascoltare e supportare ogni situazione.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>Multilingua</h3>
+        <p>Il servizio è disponibile in più lingue per garantire supporto a tutte le donne presenti in Italia.</p>
+    </div>
+</div>
+
+<section class="cta-section">
+    <h2>Hai bisogno di supporto scritto?</h2>
+    <p>Puoi inviare una richiesta online e sarai ricontattata da un'operatrice qualificata.</p>
+    <a href="{% url 'tickets' %}" class="btn-primary">Invia una richiesta di aiuto</a>
+</section>
+
+<footer>
+    <p>© 2024 Presidenza del Consiglio dei Ministri – Dipartimento per le Pari Opportunità &nbsp;|&nbsp;
+    <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Accessibilità</a></p>
+</footer>
+
 </body>
 </html>

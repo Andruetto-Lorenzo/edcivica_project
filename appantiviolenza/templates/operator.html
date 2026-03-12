@@ -3,9 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1522 | operator page</title>
+    <title>Dashboard Operatori – 1522</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/operator.css' %}">
+
 </head>
 <body>
-    <h1>ciao {{ name }}</h1>
+
+<div class="topbar">
+    <span class="topbar-brand">1522 – Area Operatori</span>
+    <div class="topbar-right">
+        <span class="topbar-user">{{ request.user.get_full_name|default:request.user.username }}</span>
+    </div>
+</div>
+
+<div class="container">
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <h1>Richieste ricevute</h1>
+
+    <!-- FILTRI -->
+    <div class="filtri">
+        <a href="?" class="filtro {% if not stato_attivo %}attivo{% endif %}">Tutte</a>
+        <a href="?stato=open"       class="filtro {% if stato_attivo == 'open' %}attivo{% endif %}">🟡 Aperte ({{ open_count }})</a>
+        <a href="?stato=in carico"  class="filtro {% if stato_attivo == 'in carico' %}attivo{% endif %}">🟢 In carico ({{ carico_count }})</a>
+        <a href="?stato=closed"     class="filtro {% if stato_attivo == 'closed' %}attivo{% endif %}">⚫ Chiuse ({{ closed_count }})</a>
+        <a href="?stato=Fake alarm" class="filtro {% if stato_attivo == 'Fake alarm' %}attivo{% endif %}">🔕 Falsi allarmi ({{ fake_count }})</a>
+    </div>
+
+    <!-- TABELLA -->
+    <div class="tabella-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Regione</th>
+                    <th>Tipo violenza</th>
+                    <th>Urgenza</th>
+                    <th>Data</th>
+                    <th>Stato</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tickets %}
+                <tr>
+                    <td>
+                        {% if t.nome_utente %}{{ t.nome_utente }}
+                        {% else %}<span class="nome-anonima">Anonima</span>{% endif %}
+                    </td>
+                    <td>{{ t.regione_provenienza }}</td>
+                    <td>{{ t.get_tipo_violenza_display }}</td>
+                    <td>
+                        {% if t.livello_urgenza == 'low' %}<span class="urg urg-low">Basso</span>
+                        {% elif t.livello_urgenza == 'medium' %}<span class="urg urg-med">Medio</span>
+                        {% elif t.livello_urgenza == 'high' %}<span class="urg urg-high">Alto</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ t.data|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if t.stato_richiesta == 'open' %}<span class="badge badge-open">Aperta</span>
+                        {% elif t.stato_richiesta == 'in carico' %}<span class="badge badge-carico">In carico</span>
+                        {% elif t.stato_richiesta == 'closed' %}<span class="badge badge-closed">Chiusa</span>
+                        {% elif t.stato_richiesta == 'Fake alarm' %}<span class="badge badge-fake">Falso allarme</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="azioni">
+                            <!-- Dettaglio: sempre visibile -->
+                            <button class="btn btn-dettaglio" onclick="apriDettaglio('{{ t.pk }}')">👁 Dettaglio</button>
+
+                            {% if t.stato_richiesta == 'open' %}
+                                <!-- APERTA: prendi in carico -->
+                                <form method="post" action="{% url 'ticket_accetta' t.pk %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-accetta">✅ Prendi in carico</button>
+                                </form>
+
+                            {% elif t.stato_richiesta == 'in carico' %}
+                                <!-- IN CARICO: chiudi o falso allarme -->
+                                <button class="btn btn-chiudi" onclick="apriConferma('{{ t.pk }}', 'closed')">🔒 Chiudi</button>
+                                <button class="btn btn-fake"   onclick="apriConferma('{{ t.pk }}', 'fake')">🔕 Falso allarme</button>
+                            {% endif %}
+                            {# Chiuse e falsi allarmi: solo dettaglio #}
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- MODAL DETTAGLIO -->
+                <div class="overlay" id="det-{{ t.pk }}">
+                    <div class="modale">
+                        <button class="chiudi-modale" onclick="chiudiDettaglio('{{ t.pk }}')">×</button>
+                        <h2>Dettaglio richiesta —
+                            {% if t.stato_richiesta == 'open' %}<span class="badge badge-open">Aperta</span>
+                            {% elif t.stato_richiesta == 'in carico' %}<span class="badge badge-carico">In carico</span>
+                            {% elif t.stato_richiesta == 'closed' %}<span class="badge badge-closed">Chiusa</span>
+                            {% elif t.stato_richiesta == 'Fake alarm' %}<span class="badge badge-fake">Falso allarme</span>
+                            {% endif %}
+                        </h2>
+
+                        <div class="campo">
+                            <div class="etichetta">Nome</div>
+                            <div class="valore">{{ t.nome_utente|default:"Non fornito (anonima)" }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Email</div>
+                            <div class="valore"><a href="mailto:{{ t.email }}">{{ t.email }}</a></div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Telefono</div>
+                            <div class="valore"><a href="tel:{{ t.telefono }}">{{ t.telefono }}</a></div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Regione</div>
+                            <div class="valore">{{ t.regione_provenienza }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Fascia d'età</div>
+                            <div class="valore">{{ t.get_fascia_eta_display }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Tipo di violenza</div>
+                            <div class="valore">{{ t.get_tipo_violenza_display }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Livello urgenza</div>
+                            <div class="valore">
+                                {% if t.livello_urgenza == 'low' %}<span class="urg urg-low">Basso</span>
+                                {% elif t.livello_urgenza == 'medium' %}<span class="urg urg-med">Medio</span>
+                                {% elif t.livello_urgenza == 'high' %}<span class="urg urg-high">Alto</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Data / Ora</div>
+                            <div class="valore">{{ t.data|date:"d/m/Y" }} alle {{ t.ora|time:"H:i" }}</div>
+                        </div>
+                        <hr class="sep">
+                        <div class="campo">
+                            <div class="etichetta">Descrizione</div>
+                            <div class="descr">{{ t.descrizione }}</div>
+                        </div>
+
+                        <div class="modale-azioni">
+                            {% if t.stato_richiesta == 'open' %}
+                                <form method="post" action="{% url 'ticket_accetta' t.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-accetta">✅ Prendi in carico</button>
+                                </form>
+                            {% elif t.stato_richiesta == 'in carico' %}
+                                <button class="btn btn-chiudi" onclick="chiudiDettaglio('{{ t.pk }}'); apriConferma('{{ t.pk }}', 'closed');">🔒 Chiudi</button>
+                                <button class="btn btn-fake"   onclick="chiudiDettaglio('{{ t.pk }}'); apriConferma('{{ t.pk }}', 'fake');">🔕 Falso allarme</button>
+                            {% endif %}
+                            <button class="btn btn-dettaglio" onclick="chiudiDettaglio('{{ t.pk }}')">Chiudi</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL CONFERMA CHIUDI -->
+                <div class="overlay" id="conf-closed-{{ t.pk }}">
+                    <div class="modale conferma">
+                        <h3>Chiudere questa richiesta?</h3>
+                        <p>Stai per segnare la richiesta come <strong>risolta</strong>. L'operazione non può essere annullata.</p>
+                        <div class="conferma-btns">
+                            <button class="btn-annulla" onclick="chiudiConferma('{{ t.pk }}', 'closed')">Annulla</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL CONFERMA FALSO ALLARME -->
+                <div class="overlay" id="conf-fake-{{ t.pk }}">
+                    <div class="modale conferma">
+                        <h3>Segnare come falso allarme?</h3>
+                        <p>Stai per chiudere questa richiesta come <strong>falso allarme</strong>. L'operazione non può essere annullata.</p>
+                        <div class="conferma-btns">
+                            <button class="btn-annulla" onclick="chiudiConferma('{{ t.pk }}', 'fake')">Annulla</button>
+                        </div>
+                    </div>
+                </div>
+
+                {% empty %}
+                <tr><td colspan="7" class="vuoto">Nessuna richiesta trovata.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function apriDettaglio(pk)    { document.getElementById('det-' + pk).classList.add('aperto'); }
+    function chiudiDettaglio(pk)  { document.getElementById('det-' + pk).classList.remove('aperto'); }
+    function apriConferma(pk, t)  { document.getElementById('conf-' + t + '-' + pk).classList.add('aperto'); }
+    function chiudiConferma(pk,t) { document.getElementById('conf-' + t + '-' + pk).classList.remove('aperto'); }
+
+    document.querySelectorAll('.overlay').forEach(el => {
+        el.addEventListener('click', e => { if (e.target === el) el.classList.remove('aperto'); });
+    });
+</script>
+
 </body>
 </html>

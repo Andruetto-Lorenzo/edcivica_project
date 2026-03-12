@@ -1,53 +1,308 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <title>Tickets</title>
+    <title>Invia una Richiesta – 1522</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --rose:    #c9696e;
+            --rose-lt: #e8a4a7;
+            --rose-dk: #9c3f44;
+            --cream:   #fdf6f0;
+            --warm:    #f5e6dc;
+            --text:    #2d1f1f;
+            --muted:   #7a5c5c;
+            --white:   #ffffff;
+            --border:  #e5d0ce;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── TOP BAR ── */
+        .topbar {
+            background: var(--white);
+            border-bottom: 2px solid var(--rose-lt);
+            padding: 0 2rem; height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .topbar-brand {
+            font-family: 'Merriweather', serif;
+            font-size: 1.4rem; font-weight: 700; color: var(--rose-dk);
+        }
+        .topbar a { font-size: .88rem; color: var(--muted); text-decoration: none; font-weight: 600; }
+        .topbar a:hover { color: var(--rose-dk); }
+
+        /* ── HERO STRIP ── */
+        .page-header {
+            background: linear-gradient(135deg, var(--rose-dk), var(--rose));
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            color: var(--white);
+        }
+        .page-header h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.6rem; font-weight: 700;
+            margin-bottom: .5rem;
+        }
+        .page-header p {
+            font-size: .97rem; opacity: .9; font-weight: 300;
+        }
+
+        /* ── NOTICE ── */
+        .notice {
+            max-width: 680px; margin: 2rem auto 0;
+            padding: 0 1.5rem;
+        }
+        .notice-box {
+            background: var(--warm);
+            border: 1px solid var(--rose-lt);
+            border-radius: 8px;
+            padding: 1rem 1.4rem;
+            font-size: .9rem; color: var(--muted);
+            display: flex; gap: .7rem; align-items: flex-start;
+        }
+        .notice-box span { font-size: 1.1rem; flex-shrink: 0; }
+
+        /* ── FORM CARD ── */
+        .form-wrap {
+            max-width: 680px; margin: 1.5rem auto 3rem;
+            padding: 0 1.5rem;
+        }
+        .form-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem 2.5rem;
+            box-shadow: 0 6px 32px rgba(156,63,68,.1);
+            border-left: 4px solid var(--rose);
+        }
+
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1rem; font-weight: 700;
+            color: var(--rose-dk);
+            margin-bottom: 1.2rem;
+            padding-bottom: .5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .form-grid .full { grid-column: 1 / -1; }
+
+        .form-group { display: flex; flex-direction: column; }
+
+        label {
+            font-size: .86rem; font-weight: 600;
+            color: var(--muted);
+            margin-bottom: .4rem;
+            letter-spacing: .02em;
+        }
+        .optional {
+            font-weight: 300; font-style: italic;
+            font-size: .8rem; color: #b08080;
+            margin-left: .3rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: .72rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: .95rem;
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--text);
+            background: var(--cream);
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+            appearance: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--rose);
+            box-shadow: 0 0 0 3px rgba(201,105,110,.12);
+            background: var(--white);
+        }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a5c5c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+        textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+        /* messages */
+        .messages { margin-bottom: 1.2rem; }
+        .alert { padding: .7rem 1rem; border-radius: 6px; font-size: .9rem; margin-bottom: .5rem; }
+        .alert-error { background: #fdecea; color: #9c3f44; border: 1px solid #e8a4a7; }
+        .alert-success { background: #eaf7ee; color: #2e7d32; border: 1px solid #a5d6a7; }
+
+        .divider { margin: 1.8rem 0 1.4rem; border: none; border-top: 1px solid var(--border); }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--rose);
+            color: var(--white);
+            border: none;
+            padding: .9rem;
+            border-radius: 6px;
+            font-size: 1rem; font-weight: 600;
+            font-family: 'Source Sans 3', sans-serif;
+            cursor: pointer; letter-spacing: .02em;
+            transition: background .2s;
+            margin-top: .8rem;
+        }
+        .btn-submit:hover { background: var(--rose-dk); }
+
+        .privacy-note {
+            font-size: .8rem; color: var(--muted);
+            text-align: center; margin-top: 1rem;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: .8rem; color: var(--muted);
+        }
+
+        @media (max-width: 540px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-card { padding: 1.8rem 1.3rem; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Inviaci una richiesta anonimamente</h1>
 
-    <div class="row g-3">
-        <form class="row g-3" method="POST">
+<div class="topbar">
+    <span class="topbar-brand">1522</span>
+    <a href="{% url 'home' %}">← Torna alla home</a>
+</div>
+
+<div class="page-header">
+    <h1>Invia una richiesta di aiuto</h1>
+    <p>Compila il modulo e sarai ricontattata da un'operatrice specializzata</p>
+</div>
+
+<div class="notice">
+    <div class="notice-box">
+        <span>📞</span>
+        <div>Se sei in pericolo immediato chiama il <strong>1522</strong> o il <strong>112</strong>.
+        Il modulo online è un supporto aggiuntivo, non sostituisce l'assistenza telefonica.</div>
+    </div>
+</div>
+
+<div class="form-wrap">
+    <div class="form-card">
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'tickets' %}">
             {% csrf_token %}
-            <div class="col-md-6">
-                <label for="inputUsername" class="form-label">Nome Utente</label>
-                <input type="text" name="username" id="username"  class="form-control"/>
+
+            <!-- DATI PERSONALI -->
+            <p class="section-title">Dati personali <span style="font-weight:300;font-size:.85rem;">(il nome è facoltativo)</span></p>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name">Nome <span class="optional">- facoltativo</span></label>
+                    <input type="text" id="name" name="username" placeholder="Il tuo nome">
+                </div>
+
+                <div class="form-group">
+                    <label for="fascia_eta">Fascia d'età *</label>
+                    <select id="fascia_eta" name="fascia_eta" required>
+                        <option value="" disabled selected>Seleziona</option>
+                        {% for eta in fascie_eta %}
+                            <option value="{{eta}}"> {{eta}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Indirizzo email *</label>
+                    <input type="email" id="email" name="email"
+                           placeholder="tuamail@esempio.it" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Numero di telefono *</label>
+                    <input type="tel" id="phone" name="telefono"
+                           placeholder="+39 000 0000000" required>
+                </div>
+
+                <div class="form-group full">
+                    <label for="region">Regione *</label>
+                    <select id="region" name="regione_provenienza" required>
+                        <option value="" disabled selected>Seleziona la tua regione</option>
+                        {% for regione in regioni_italia %}
+                            <option value="{{regione}}">{{regione}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <div class="col-md-6">
-                <label for="inputAge" class="form-label">Fascia d'età</label>
-                <select name="fascia_eta" id="fasciaEta" class="form-select">
-                    {% for eta in fascie_eta %}
-                        <option value="{{ eta }}">{{ eta }}</option>
+
+            <hr class="divider">
+            <p class="section-title">Il tuo messaggio</p>
+
+            <div class="form-group">
+                <label for="tipo_violenza">Tipo di violenza subito</label>
+                <select name="tipo_violenza">
+                    {% for violenza in tipo_violenza %}
+                        <option value="{{violenza}}">{{violenza}}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-md-6">
-                <label for="inputTelefono" class="form-label">Telefono</label>
-                <input type="text" name="telefono" id="telefono" class="form-control" placeholder="telefono" />
-            </div>
-            <div class="col-md-6">
-                <label for="inputState" class="form-label">Regione</label>
-                <select id="inputState" class="form-select" name="regione_provenienza">
-                {% for regione in regioni_italia %}
-                    <option value="{{ regione }}">{{ regione }}</option>
-                {% endfor %}
+
+            <div class="form-group">
+                <label for="livello_urgenza">Seleziona il livello di urgenza</label>
+                <select name="importanza">
+                    {% for livello in livello_urgenza %}
+                        <option value="{{livello}}">{{livello}}</option>
+                    {% endfor %}
                 </select>
             </div>
-            <div class="col-md-6">
-                <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-email form-control" name="email">
+
+            <div class="form-group" style="margin-top:1rem;">
+                <label for="message">Descrizione</label>
+                <textarea id="message" name="descrizione" required
+                          placeholder="Scrivi qui tutto ciò che vuoi comunicare. Prenditi il tempo che ti serve."></textarea>
             </div>
-            <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword4" name="password">
-            </div>
-            <div class="col-md-6">
-                <button type="submit" class="btn btn-primary">Sign in</button>
-            </div>
+
+            <button type="submit" class="btn-submit">Invia la richiesta</button>
+
+            <p class="privacy-note">
+                🔒 I tuoi dati sono trattati in modo riservato ai sensi del Reg. UE 2016/679 (GDPR).
+                Non saranno condivisi con terzi senza il tuo consenso.
+            </p>
         </form>
     </div>
+</div>
+
+<footer>© 2024 Presidenza del Consiglio dei Ministri – Dipartimento per le Pari Opportunità</footer>
+
 </body>
 </html>
