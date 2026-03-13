@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import home, login, operator, contacts
+from .views import home, login, operator
 from .views import tickets
 
 urlpatterns = [
@@ -8,7 +8,6 @@ urlpatterns = [
     path('', home.home, name='home'),
     # path('', include('appantiviolenza.urls')),
     path('login/', login.register_view, name='login'),
-    path('operator/', operator.operator, name='operator_space'),
-    path('contacts/', contacts.contacts, name='contacts'),
-    path('tickets/', tickets.tickets, name='tickets'),
+    path('operator/', operator.operator_view, name='operator_space'),
+    path('tickets/', tickets.tickets_view, name='tickets'),
 ]

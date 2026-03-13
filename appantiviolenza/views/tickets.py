@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from ..models import Ticket
 
-def tickets(request):
+def tickets_view(request):
     REGIONI = ["Valle d'Aosta", "Piemonte", 
                 "Liguria", "Lombardia", "Veneto", 
                 "Friuli Venezia Giulia", "Trentino Alto Adige", 
