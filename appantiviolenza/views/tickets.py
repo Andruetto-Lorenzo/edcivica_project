@@ -53,4 +53,5 @@ def tickets_view(request):
         'regioni_italia': REGIONI,
         'tipo_violenza': tipi_violenza,
         'livello_urgenza': livello_urgenza,
+        'stato_richiesta': Ticket.stato_richiesta,
     })

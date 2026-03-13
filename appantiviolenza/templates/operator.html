@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Operatori – 1522</title>
+    <title>Dashboard Operatori - 1522</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -23,16 +23,6 @@
 <div class="container">
     <h1>Richieste ricevute</h1>
 
-    <!-- FILTRI -->
-    <div class="filtri">
-        <a href="?" class="filtro {% if not stato_attivo %}attivo{% endif %}">Tutte</a>
-        <a href="?stato=open"       class="filtro {% if stato_attivo == 'open' %}attivo{% endif %}">🟡 Aperte ({{ open_count }})</a>
-        <a href="?stato=in carico"  class="filtro {% if stato_attivo == 'in carico' %}attivo{% endif %}">🟢 In carico ({{ carico_count }})</a>
-        <a href="?stato=closed"     class="filtro {% if stato_attivo == 'closed' %}attivo{% endif %}">⚫ Chiuse ({{ closed_count }})</a>
-        <a href="?stato=Fake alarm" class="filtro {% if stato_attivo == 'Fake alarm' %}attivo{% endif %}">🔕 Falsi allarmi ({{ fake_count }})</a>
-    </div>
-
-    <!-- TABELLA -->
     <div class="tabella-wrap">
         <table>
             <thead>
@@ -54,52 +44,46 @@
                         {% else %}<span class="nome-anonima">Anonima</span>{% endif %}
                     </td>
                     <td>{{ t.regione_provenienza }}</td>
-                    <td>{{ t.get_tipo_violenza_display }}</td>
                     <td>
-                        {% if t.livello_urgenza == 'low' %}<span class="urg urg-low">Basso</span>
-                        {% elif t.livello_urgenza == 'medium' %}<span class="urg urg-med">Medio</span>
-                        {% elif t.livello_urgenza == 'high' %}<span class="urg urg-high">Alto</span>
+                        {{ t.tipo_violenza }}
+                    </td>
+                    <td>
+                        {% if t.livello_urgenza == 'Basso' %}<span class="urg urg-low">Basso</span>
+                        {% elif t.livello_urgenza == 'Medio' %}<span class="urg urg-med">Medio</span>
+                        {% elif t.livello_urgenza == 'Alto' %}<span class="urg urg-high">Alto</span>
                         {% endif %}
                     </td>
-                    <td>{{ t.data|date:"d/m/Y" }}</td>
                     <td>
-                        {% if t.stato_richiesta == 'open' %}<span class="badge badge-open">Aperta</span>
-                        {% elif t.stato_richiesta == 'in carico' %}<span class="badge badge-carico">In carico</span>
-                        {% elif t.stato_richiesta == 'closed' %}<span class="badge badge-closed">Chiusa</span>
-                        {% elif t.stato_richiesta == 'Fake alarm' %}<span class="badge badge-fake">Falso allarme</span>
-                        {% endif %}
+                        {{ t.data }}
+                    </td>
+                    <td>
+                        {{ t.stato_richiesta }}
                     </td>
                     <td>
                         <div class="azioni">
-                            <!-- Dettaglio: sempre visibile -->
                             <button class="btn btn-dettaglio" onclick="apriDettaglio('{{ t.pk }}')">👁 Dettaglio</button>
+                            
+                            {% if t.stato_richiesta == 'Aperta' %}
+                                <button class="btn btn-accetta" name="btn_accetta" value="{{t.stato_richiesta}}">
+                                    Accetta
+                                </button>
 
-                            {% if t.stato_richiesta == 'open' %}
-                                <!-- APERTA: prendi in carico -->
-                                <form method="post" action="{% url 'ticket_accetta' t.pk %}" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-accetta">✅ Prendi in carico</button>
-                                </form>
-
-                            {% elif t.stato_richiesta == 'in carico' %}
-                                <!-- IN CARICO: chiudi o falso allarme -->
-                                <button class="btn btn-chiudi" onclick="apriConferma('{{ t.pk }}', 'closed')">🔒 Chiudi</button>
-                                <button class="btn btn-fake"   onclick="apriConferma('{{ t.pk }}', 'fake')">🔕 Falso allarme</button>
+                            {% elif t.stato_richiesta == 'In carico' %}
+                                <button class="btn btn-chiudi" onclick="apriConferma('{{ t.pk }}', 'Chiusa')">🔒 Chiudi</button>
+                                <button class="btn btn-fake"   onclick="apriConferma('{{ t.pk }}', 'Falso allarme')">🔕 Falso allarme</button>
                             {% endif %}
-                            {# Chiuse e falsi allarmi: solo dettaglio #}
                         </div>
                     </td>
                 </tr>
 
-                <!-- MODAL DETTAGLIO -->
                 <div class="overlay" id="det-{{ t.pk }}">
                     <div class="modale">
                         <button class="chiudi-modale" onclick="chiudiDettaglio('{{ t.pk }}')">×</button>
                         <h2>Dettaglio richiesta —
-                            {% if t.stato_richiesta == 'open' %}<span class="badge badge-open">Aperta</span>
-                            {% elif t.stato_richiesta == 'in carico' %}<span class="badge badge-carico">In carico</span>
-                            {% elif t.stato_richiesta == 'closed' %}<span class="badge badge-closed">Chiusa</span>
-                            {% elif t.stato_richiesta == 'Fake alarm' %}<span class="badge badge-fake">Falso allarme</span>
+                            {% if t.stato_richiesta == 'Aperta' %}<span class="badge badge-open">Aperta</span>
+                            {% elif t.stato_richiesta == 'In carico' %}<span class="badge badge-carico">In carico</span>
+                            {% elif t.stato_richiesta == 'Chiusa' %}<span class="badge badge-closed">Chiusa</span>
+                            {% elif t.stato_richiesta == 'Falso allarme' %}<span class="badge badge-fake">Falso allarme</span>
                             {% endif %}
                         </h2>
 
@@ -130,9 +114,9 @@
                         <div class="campo">
                             <div class="etichetta">Livello urgenza</div>
                             <div class="valore">
-                                {% if t.livello_urgenza == 'low' %}<span class="urg urg-low">Basso</span>
-                                {% elif t.livello_urgenza == 'medium' %}<span class="urg urg-med">Medio</span>
-                                {% elif t.livello_urgenza == 'high' %}<span class="urg urg-high">Alto</span>
+                                {% if t.livello_urgenza == 'Basso' %}<span class="urg urg-low">Basso</span>
+                                {% elif t.livello_urgenza == 'Medio' %}<span class="urg urg-med">Medio</span>
+                                {% elif t.livello_urgenza == 'Alto' %}<span class="urg urg-high">Alto</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -147,12 +131,8 @@
                         </div>
 
                         <div class="modale-azioni">
-                            {% if t.stato_richiesta == 'open' %}
-                                <form method="post" action="{% url 'ticket_accetta' t.pk %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-accetta">✅ Prendi in carico</button>
-                                </form>
-                            {% elif t.stato_richiesta == 'in carico' %}
+                            {% if t.stato_richiesta == 'Aperta' %}
+                            {% elif t.stato_richiesta == 'In carico' %}
                                 <button class="btn btn-chiudi" onclick="chiudiDettaglio('{{ t.pk }}'); apriConferma('{{ t.pk }}', 'closed');">🔒 Chiudi</button>
                                 <button class="btn btn-fake"   onclick="chiudiDettaglio('{{ t.pk }}'); apriConferma('{{ t.pk }}', 'fake');">🔕 Falso allarme</button>
                             {% endif %}
@@ -161,7 +141,6 @@
                     </div>
                 </div>
 
-                <!-- MODAL CONFERMA CHIUDI -->
                 <div class="overlay" id="conf-closed-{{ t.pk }}">
                     <div class="modale conferma">
                         <h3>Chiudere questa richiesta?</h3>
@@ -172,7 +151,6 @@
                     </div>
                 </div>
 
-                <!-- MODAL CONFERMA FALSO ALLARME -->
                 <div class="overlay" id="conf-fake-{{ t.pk }}">
                     <div class="modale conferma">
                         <h3>Segnare come falso allarme?</h3>
