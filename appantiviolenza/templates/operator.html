@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -181,4 +181,200 @@
 </script>
 
 </body>
-</html>
+</html> -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Operatori - 1522</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/operator.css' %}">
+    <style>
+        .sort-link {
+            color: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.5;
+        }
+        .sort-link.attivo {
+            opacity: 1;
+            font-weight: 600;
+        }
+        .sort-link:hover { opacity: 1; }
+    </style>
+
+</head>
+<body>
+
+<div class="topbar">
+    <span class="topbar-brand">1522 - Area Operatori</span>
+    <div class="topbar-right">
+        <span class="topbar-user">{{ request.user.get_full_name|default:request.user.username }}</span>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Richieste ricevute</h1>
+
+    <div class="tabella-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Regione</th>
+                    <th>Tipo violenza</th>
+                    <th>
+                        <a href="?ordina=urgenza" class="sort-link {% if ordina == 'urgenza' %}attivo{% endif %}">
+                            Urgenza {% if ordina == 'urgenza' %}↑{% else %}↕{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="?ordina=data" class="sort-link {% if ordina == 'data' %}attivo{% endif %}">
+                            Data {% if ordina == 'data' %}↑{% else %}↕{% endif %}
+                        </a>
+                    </th>
+                    <th>Stato</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tickets %}
+                <tr>
+                    <td>
+                        {% if t.nome_utente %}{{ t.nome_utente }}
+                        {% else %}<span class="nome-anonima">Anonima</span>{% endif %}
+                    </td>
+                    <td>{{ t.regione_provenienza }}</td>
+                    <td>{{ t.tipo_violenza }}</td>
+                    <td>
+                        {% if t.livello_urgenza == 'low' %}<span class="urg urg-low">Basso</span>
+                        {% elif t.livello_urgenza == 'medium' %}<span class="urg urg-med">Medio</span>
+                        {% elif t.livello_urgenza == 'high' %}<span class="urg urg-high">Alto</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ t.data }}</td>
+                    <td>{{ t.stato_richiesta }}</td>
+                    <td>
+                        <div class="azioni">
+                            <button class="btn btn-dettaglio" onclick="apriDettaglio('{{ t.id }}')">👁 Dettaglio</button>
+
+                            {% if t.stato_richiesta == 'Aperta' %}
+                                <form method="post" action="{% url 'operator_space' %}" style="display:inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="ticket_id" value="{{ t.id }}">
+                                    <input type="hidden" name="azione" value="accetta">
+                                    <button type="submit" class="btn btn-accetta">Accetta</button>
+                                </form>
+
+                            {% elif t.stato_richiesta == 'In carico' %}
+                                <form method="post" action="{% url 'operator_space' %}" style="display:inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="ticket_id" value="{{ t.id }}">
+                                    <input type="hidden" name="azione" value="chiudi">
+                                    <button type="submit" class="btn btn-chiudi">🔒 Chiudi</button>
+                                </form>
+                                <form method="post" action="{% url 'operator_space' %}" style="display:inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="ticket_id" value="{{ t.id }}">
+                                    <input type="hidden" name="azione" value="fake">
+                                    <button type="submit" class="btn btn-fake">🔕 Falso allarme</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- MODALE DETTAGLIO -->
+                <div class="overlay" id="det-{{ t.id }}">
+                    <div class="modale">
+                        <button class="chiudi-modale" onclick="chiudiDettaglio('{{ t.id }}')">×</button>
+                        <h2>Dettaglio richiesta —
+                            {% if t.stato_richiesta == 'Aperta' %}<span class="badge badge-open">Aperta</span>
+                            {% elif t.stato_richiesta == 'In carico' %}<span class="badge badge-carico">In carico</span>
+                            {% elif t.stato_richiesta == 'Chiusa' %}<span class="badge badge-closed">Chiusa</span>
+                            {% elif t.stato_richiesta == 'Fake alarm' %}<span class="badge badge-fake">Falso allarme</span>
+                            {% endif %}
+                        </h2>
+
+                        <div class="campo">
+                            <div class="etichetta">Nome</div>
+                            <div class="valore">{{ t.nome_utente|default:"Non fornito (anonima)" }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Email</div>
+                            <div class="valore"><a href="/cdn-cgi/l/email-protection#f28989d286dc979f939b9ed28f8f">{{ t.email }}</a></div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Telefono</div>
+                            <div class="valore"><a href="tel:{{ t.telefono }}">{{ t.telefono }}</a></div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Regione</div>
+                            <div class="valore">{{ t.regione_provenienza }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Fascia d'età</div>
+                            <div class="valore">{{ t.get_fascia_eta_display }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Tipo di violenza</div>
+                            <div class="valore">{{ t.get_tipo_violenza_display }}</div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Livello urgenza</div>
+                            <div class="valore">
+                                {% if t.livello_urgenza == 'low' %}<span class="urg urg-low">Basso</span>
+                                {% elif t.livello_urgenza == 'medium' %}<span class="urg urg-med">Medio</span>
+                                {% elif t.livello_urgenza == 'high' %}<span class="urg urg-high">Alto</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <div class="etichetta">Data / Ora</div>
+                            <div class="valore">{{ t.data|date:"d/m/Y" }} alle {{ t.ora|time:"H:i" }}</div>
+                        </div>
+                        <hr class="sep">
+                        <div class="campo">
+                            <div class="etichetta">Descrizione</div>
+                            <div class="descr">{{ t.descrizione }}</div>
+                        </div>
+
+                        <div class="modale-azioni">
+                            {% if t.stato_richiesta == 'In carico' %}
+                                <form method="post" action="{% url 'operator_space' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="ticket_id" value="{{ t.id }}">
+                                    <input type="hidden" name="azione" value="chiudi">
+                                    <button type="submit" class="btn btn-chiudi">🔒 Chiudi</button>
+                                </form>
+                                <form method="post" action="{% url 'operator_space' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="ticket_id" value="{{ t.id }}">
+                                    <input type="hidden" name="azione" value="fake">
+                                    <button type="submit" class="btn btn-fake">🔕 Falso allarme</button>
+                                </form>
+                            {% endif %}
+                            <button class="btn btn-dettaglio" onclick="chiudiDettaglio('{{ t.id }}')">Chiudi</button>
+                        </div>
+                    </div>
+                </div>
+
+                {% empty %}
+                <tr><td colspan="7" class="vuoto">Nessuna richiesta trovata.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    function apriDettaglio(pk)   { document.getElementById('det-' + pk).classList.add('aperto'); }
+    function chiudiDettaglio(pk) { document.getElementById('det-' + pk).classList.remove('aperto'); }
+
+    document.querySelectorAll('.overlay').forEach
