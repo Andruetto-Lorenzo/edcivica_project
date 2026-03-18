@@ -19,7 +19,6 @@ body {
     min-height: 100vh;
 }
 
-/* TOP BAR */
 .topbar {
     background: var(--white);
     border-bottom: 2px solid var(--rose-lt);
@@ -27,11 +26,16 @@ body {
     display: flex; align-items: center; justify-content: space-between;
     box-shadow: 0 2px 10px rgba(180,80,80,.07);
 }
+
 .topbar-brand {
     font-family: 'Merriweather', serif;
     font-size: 1.4rem; font-weight: 700; color: var(--rose-dk);
+    text-decoration: none;
 }
 .topbar-right { display: flex; align-items: center; gap: 1.2rem; }
+.topbar-right a {
+    text-decoration: none;
+}
 .topbar-user { font-size: .88rem; color: var(--muted); }
 .btn-logout {
     text-decoration: none; font-size: .85rem; font-weight: 600;
@@ -41,7 +45,6 @@ body {
 }
 .btn-logout:hover { background: var(--rose); color: var(--white); border-color: var(--rose); }
 
-/* CONTENUTO */
 .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
 
 h1 {
@@ -50,12 +53,10 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
-/* MESSAGGI DJANGO */
 .alert { padding: .7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: .9rem; }
 .alert-success { background: #eaf7ee; color: #2e7d32; border: 1px solid #a5d6a7; }
 .alert-error   { background: #fdecea; color: #9c3f44; border: 1px solid #e8a4a7; }
 
-/* FILTRI */
 .filtri { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
 .filtro {
     padding: .38rem 1rem; border-radius: 99px;
@@ -69,7 +70,6 @@ h1 {
 .filtro:hover { border-color: var(--rose-lt); color: var(--rose-dk); }
 .filtro.attivo { background: var(--rose); color: var(--white); border-color: var(--rose); }
 
-/* TABELLA */
 .tabella-wrap {
     background: var(--white); border-radius: 10px;
     box-shadow: 0 3px 16px rgba(180,80,80,.08);
@@ -93,7 +93,6 @@ tbody tr:hover td { background: #fdf0f0; }
 
 .nome-anonima { color: var(--muted); font-style: italic; font-size: .85rem; }
 
-/* BADGE STATO */
 .badge {
     display: inline-block; padding: .2rem .65rem;
     border-radius: 99px; font-size: .76rem; font-weight: 700;
@@ -104,13 +103,11 @@ tbody tr:hover td { background: #fdf0f0; }
 .badge-closed { background: #f3f3f3; color: #555;    border: 1px solid #ccc; }
 .badge-fake   { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
 
-/* BADGE URGENZA */
 .urg { display: inline-block; padding: .18rem .55rem; border-radius: 4px; font-size: .76rem; font-weight: 700; }
 .urg-low  { background: #e8f5e9; color: #2e7d32; }
 .urg-med  { background: #fff8e1; color: #8a6200; }
 .urg-high { background: #fdecea; color: #9c3f44; }
 
-/* AZIONI */
 .azioni { display: flex; gap: .4rem; flex-wrap: wrap; }
 .btn {
     padding: .3rem .75rem; border-radius: 5px;
@@ -129,7 +126,6 @@ tbody tr:hover td { background: #fdf0f0; }
 
 .vuoto { text-align: center; padding: 2.5rem; color: var(--muted); font-style: italic; }
 
-/* MODAL */
 .overlay {
     display: none; position: fixed; inset: 0; z-index: 300;
     background: rgba(45,31,31,.4); backdrop-filter: blur(2px);
@@ -168,7 +164,6 @@ tbody tr:hover td { background: #fdf0f0; }
 .modale-azioni { display: flex; gap: .6rem; margin-top: 1.3rem; flex-wrap: wrap; }
 .modale-azioni .btn { padding: .45rem 1.1rem; font-size: .88rem; }
 
-/* CONFERMA */
 .conferma {
     max-width: 360px; border-top-color: var(--rose-dk);
     text-align: center;
@@ -188,3 +183,17 @@ tbody tr:hover td { background: #fdf0f0; }
     font-size: .9rem; font-weight: 600; font-family: inherit; cursor: pointer;
 }
 .btn-annulla:hover { background: var(--warm); }
+
+.sort-link {
+            color: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.5;
+        }
+        .sort-link.attivo {
+            opacity: 1;
+            font-weight: 600;
+        }
+        .sort-link:hover { opacity: 1; }
